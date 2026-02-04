@@ -14,13 +14,13 @@ bool ModeMyGuided::init()
 // Her kontrol döngüsünde çalışan fonksiyon
 void ModeMyGuided::run()
 {
-    // zaman artışı (simülasyon varsayımı)
+    // zaman artışı 
     timer += 0.1;
 
     float vx = 0;        // ileri hız
     float yaw_rate = 0;  // dönüş hızı
 
-    // --- Durum makinesi yapısı ---
+    
 
     // Adım 0 → ileri hareket
     if (step == 0) {
