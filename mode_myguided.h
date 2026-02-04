@@ -1,14 +1,13 @@
 #pragma once
 
-// Görev 2.3 — Yeni Flight Mode
-// Guided mantığında örnek mode sınıfı
+// Görev 2.3 — Örnek Flight Mode Sınıfı
 
 class ModeMyGuided {
 public:
-    bool init();
-    void run();
+    bool init();   // mode başlatma
+    void run();    // sürekli çalışan kontrol fonksiyonu
 
 private:
-    int step;      // davranış adımı
-    float timer;   // süre sayacı
+    int step;      // davranış aşaması
+    float timer;   // zaman sayacı
 };
