@@ -2,6 +2,7 @@
 #include <iostream>
 
 // Mode başlatma fonksiyonu
+// Mode aktif olduğunda bir kez çağrılır
 bool ModeMyGuided::init()
 {
     step = 0;
@@ -11,19 +12,23 @@ bool ModeMyGuided::init()
     return true;
 }
 
-// Her kontrol döngüsünde çalışan fonksiyon
+
+// Ana kontrol fonksiyonu
+// Mode aktif olduğu sürece sürekli çağrılır
 void ModeMyGuided::run()
 {
-    // zaman artışı 
+    // Her çağrıda zamanı artır (100 ms)
     timer += 0.1;
 
-    float vx = 0;        // ileri hız
-    float yaw_rate = 0;  // dönüş hızı
+    float vx = 0;        // ileri hız referansı
+    float yaw_rate = 0;  // dönüş hız referansı
 
-    
 
-    // Adım 0 → ileri hareket
-    if (step == 0) {
+    // -------- DURUMLAR --------
+
+    // ADIM 0 → ileri git
+    if (step == 0)
+    {
         vx = 1.0;
 
         if (timer > 5) {
@@ -32,8 +37,9 @@ void ModeMyGuided::run()
         }
     }
 
-    // Adım 1 → durma
-    else if (step == 1) {
+    // ADIM 1 → dur
+    else if (step == 1)
+    {
         vx = 0;
 
         if (timer > 2) {
@@ -42,8 +48,9 @@ void ModeMyGuided::run()
         }
     }
 
-    // Adım 2 → sağa dönüş
-    else if (step == 2) {
+    // ADIM 2 → sağa dön
+    else if (step == 2)
+    {
         yaw_rate = 30;
 
         if (timer > 3) {
@@ -52,9 +59,11 @@ void ModeMyGuided::run()
         }
     }
 
-    // Referans çıktısını yazdır
+
+    // Debug çıktısı
     std::cout << "Adim: " << step
-              << " Hiz: " << vx
-              << " Donus: " << yaw_rate
+              << " | Hiz: " << vx
+              << " | Donus: " << yaw_rate
               << std::endl;
 }
+             
