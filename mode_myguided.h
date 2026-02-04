@@ -1,13 +1,14 @@
 #pragma once
 
-// Görev 2.3 — Örnek Flight Mode Sınıfı
+#include "mode_guided.h"
 
-class ModeMyGuided {
+class ModeMyGuided : public ModeGuided
+{
 public:
-    bool init();   // mode başlatma
-    void run();    // sürekli çalışan kontrol fonksiyonu
+    bool init(bool ignore_checks) override;
+    void run() override;
 
 private:
-    int step;      // davranış aşaması
-    float timer;   // zaman sayacı
+    int step = 0;
+    float timer = 0;
 };
