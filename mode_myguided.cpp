@@ -1,63 +1,46 @@
 #include "mode_myguided.h"
 #include <iostream>
 
-// Mode başlatılırken bir kez çalışır
 bool ModeMyGuided::init(bool ignore_checks)
 {
-    // Guided init çağır
     if (!ModeGuided::init(ignore_checks)) {
         return false;
     }
 
-    step = 0;
-    timer = 0;
-
-    std::cout << "ModeMyGuided basladi" << std::endl;
+    adim = 0;
+    zamanlayici = 0;
+    std::cout << "Ozel Mod Aktif" << std::endl;
     return true;
 }
 
-
-// Scheduler tarafından sürekli çağrılır
 void ModeMyGuided::run()
 {
-    ModeGuided::run();   // temel guided davranış
+    ModeGuided::run();
+    zamanlayici += 0.02f; 
 
-    timer += 0.1;
+    float ileri_hiz = 0;  
+    float donus_hizi = 0; 
 
-    float vx = 0;        // ileri hız
-    float yaw_rate = 0;  // dönüş hızı
-
-
-    // ileri git
-    if (step == 0) {
-        vx = 1.0;
-        if (timer > 5) {
-            step = 1;
-            timer = 0;
-        }
+    if (adim == 0) {         // İlerleme adımı
+        ileri_hiz = 1.0f;
+        if (zamanlayici > 5) { adim = 1; zamanlayici = 0; }
+    }
+    else if (adim == 1) {    // Durma adımı
+        ileri_hiz = 0;
+        if (zamanlayici > 2) { adim = 2; zamanlayici = 0; }
+    }
+    else if (adim == 2) {    // Dönme adımı
+        donus_hizi = 30.0f;
+        if (zamanlayici > 3) { adim = 0; zamanlayici = 0; }
     }
 
-    // dur
-    else if (step == 1) {
-        vx = 0;
-        if (timer > 2) {
-            step = 2;
-            timer = 0;
-        }
-    }
+    // Görev 2.4: Fiziksel hareket komutlarını gönder
+    Vector3f hedef_hiz(ileri_hiz * 100.0f, 0, 0); 
+    set_velocity_target_cms(hedef_hiz);
+    set_yaw_rate_target(donus_hizi * 100.0f);
 
-    // dön
-    else if (step == 2) {
-        yaw_rate = 30;
-        if (timer > 3) {
-            step = 0;
-            timer = 0;
-        }
+    // Takip çıktısı
+    if (int(zamanlayici * 10) % 10 == 0) {
+        std::cout << "Adim:" << adim << " Hiz:" << ileri_hiz << " Donus:" << donus_hizi << std::endl;
     }
-
-    // debug çıktı
-    std::cout << "step:" << step
-              << " vx:" << vx
-              << " yaw:" << yaw_rate
-              << std::endl;
 }
