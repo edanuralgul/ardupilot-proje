@@ -34,12 +34,12 @@ void ModeMyGuided::run()
         if (zamanlayici > 3) { adim = 0; zamanlayici = 0; }
     }
 
-    // Görev 2.4: Fiziksel hareket komutlarını gönder
+    
     Vector3f hedef_hiz(ileri_hiz * 100.0f, 0, 0); 
     set_velocity_target_cms(hedef_hiz);
     set_yaw_rate_target(donus_hizi * 100.0f);
 
-    // Takip çıktısı
+    
     if (int(zamanlayici * 10) % 10 == 0) {
         std::cout << "Adim:" << adim << " Hiz:" << ileri_hiz << " Donus:" << donus_hizi << std::endl;
     }
