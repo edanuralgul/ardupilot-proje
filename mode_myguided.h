@@ -1,14 +1,23 @@
 #pragma once
 
-#include "mode_guided.h"
+#include "mode.h"
 
-class ModeMyGuided : public ModeGuided
-{
+class ModeMyGuided : public ModeGuided {
 public:
+    using ModeGuided::ModeGuided;
+
     bool init(bool ignore_checks) override;
     void run() override;
 
+protected:
+    const char* name() const override { return "MyGuided"; }
+    const char* name4() const override { return "MYGD"; }
+
 private:
-    int adim = 0;
-    float zamanlayici = 0;
+    uint8_t step = 0;
+    uint32_t step_start_ms = 0;
+    bool started_after_takeoff = false;
+
+    float target_yaw_rad = 0.0f;
 };
+
